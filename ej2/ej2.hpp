@@ -1,10 +1,8 @@
-using namespace std;
+#include <type_traits>
 #include <utility> //para pair
 static constexpr double pi = 3.14159265358979323846;
-#include <type_traits>
-//SE PUEDE USAR PAIR?
-//IMPLEMENTACION DE POINT EN LAS CLASES SIGUIENTES
-//IMPLEMENTACION DE OTRAS CLASES EN SUBCLASES
+using namespace std;
+
 class point {
     private:
         pair<double, double> coords;
@@ -41,15 +39,15 @@ template<typename T>
 class ProcesadorFigura {
     public:
     double funcion_area(const T& t){
-        if constexpr(is_same_v(T, circle)){
+        if constexpr(std::is_same_v<T, circle>){
             double r = t.get_radius();
             return pi*r*r;
         }
-        if constexpr(is_same_v(T, ellipse)){
+        if constexpr(std::is_same_v<T, ellipse>){
             pair<double, double> rs=t.get_radiuss();
             return pi*rs.first*rs.second;
         }
-        if constexpr(is_same_v(T, rectangle)){
+        if constexpr(std::is_same_v<T, rectangle>){
             pair<double, double> bh=t.get_base_height();
             return bh.first*bh.second;
         }
