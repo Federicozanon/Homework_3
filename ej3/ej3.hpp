@@ -1,89 +1,66 @@
 #include <vector>
-#include <string>
+#include <string>//puede ser descartado?
 #include <iostream>
-#include <type_traits>
-
+#include <type_traits>//puede ser descartado?
+#include <sstream> //puede ser descartado?
 using namespace std;
 using vec_doubles = vector<double>;
 using vec_string = vector<string>;
 using matrix_int = vector<vector<int>>;
 
+//hace falta los constructores?
+
 template <typename T>
 class variables_generator {
     private:
-        vector<T> values;
+        T values;
     public:
-        variables_generator() = default;
-        void complete_data(T value){
+        using value_type = typename T::value_type;
+        void complete_data(const value_type& value){
             values.push_back(value);
         }
-        void data_process(){
+        string data_process() const {
+            ostringstream string_vec;
             if constexpr(is_same_v<T, vec_doubles>){
-                cout<<"[";
-                for(i: values){
-                    cout<<i<<",";
+                string_vec<<"[";
+                for(size_t i=0; i<values.size(); i++){
+                    string_vec<<values[i]<<",";
                 }
-                cout<<"]\n";
+                string_vec<<"]\n";
             }
-            if constexpr(is_same_v<T, vec_string>){
-                cout<<"\"[";
-                for(i: values){
-                    cout<<"\""<<i<<"\",";
+            else if constexpr(is_same_v<T, vec_string>){
+                string_vec<<"[";
+               for(size_t i=0; i<values.size();i++){
+                    string_vec<<"\""<<values[i]<<"\",";
                 }
-                cout<<"]\n";
+                string_vec<<"]\n";
             }
-            if constexpr(is_same_v<T, matrix_int>){
-                cout<<"[\n";
-                for(int i=0, i<n, i+=2){
-                    cout<<"["<<values[i/n][(i+1)%n]<<", "<<values[(i+1)/n][(i+1)%n]<<"],\n"
+            else if constexpr(is_same_v<T, matrix_int>){
+                string_vec<<"[\n";
+                int n=values[0].size();
+                for(int i=0; i<n; i+=2){ // como puedo hacer para sacar el size de la matriz de forma mas segura?
+                    string_vec<<"["<<values[i/n][(i+1)%n]<<", "<<values[(i+1)/n][(i+1)%n]<<"],\n";
                 }
-                cout<<"]\n";
+                string_vec<<"]\n";
             }
+            else{
+                throw std::invalid_argument("El tipo de dato no es compatible");
+            }
+            return string_vec.str();
         }
 };
-template <typename T>
-class variables_conversion_Json : public variables_generator {
+class variables_conversion_Json{
     private:
-        vector<T> *values;
-        vector<T*> pointers_values;
-        string name;
+        vector<pair<string, string>> vec_name_and_values;
     public:
-        variables_conversion_Json() = variables_generator(), default;
-        void tag_association(vector<T> valores, string nombre){
-            values=&valores;
-            name=nombre;
-            pointers_values.push_back(*valores)
-
+        void tag_association(string valores, string nombre){
+            vec_name_and_values.push_back({nombre, valores});
         }
-        template<>
-        void Json_construction<matrix_int>(){
-            
+        void Final_Json_construction(){
+            cout<<"{ ";
+            for(size_t i=0; i<vec_name_and_values.size(); i++){
+                cout<<"\""<<vec_name_and_values[i].first<<"\" : "<<vec_name_and_values[i].second;
+            }
+            cout<<"}";
         }
-        template<>
-        void Json_construction<vec_doubles>(){
-            
-        }
-        template<>
-        void Json_construction<vec_string>(){
-
-        }
-
 };
-
-
-/*
-while(true){
-                    T value;
-                    cout<<"ingrese un dato, si desea salir aprete escape: ";
-                    cin>>value;
-                    if(cin.good()){
-                        if(char(value)==27){
-                            break;
-                        }
-                        values.push_back(value);
-                        cout<<"\n";
-                    }
-                    else{
-                        cout<<"Error al ingresar el dato, ingrese nuevamente el tipo adecuado\n";
-                    }
-                }*/
