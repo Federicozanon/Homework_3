@@ -16,7 +16,7 @@ class MedicionBase : public IMediciones {
         MedicionBase(float t_medicion);// : tiempoMedicion(make_unique<float>(t_medicion)) {};
         float getTiempo();
         virtual void imprimir() = 0;
-
+        //prototype interface metodo virtual de copiar
         virtual unique_ptr<MedicionBase> copiar() const = 0;
 };
 class Presion : public MedicionBase {
@@ -27,7 +27,7 @@ class Presion : public MedicionBase {
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;
-
+        //concrete prototype. son los objetos a los que se les provee un metodo para copiar
         unique_ptr<MedicionBase> copiar() const override;
 };
 class Posicion : public MedicionBase{
@@ -39,7 +39,7 @@ class Posicion : public MedicionBase{
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;     
-
+        //concrete prototype
         unique_ptr<MedicionBase> copiar() const override;
 };
 class SaveFlightData : public IMediciones{
