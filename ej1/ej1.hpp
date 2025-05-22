@@ -6,14 +6,14 @@ using namespace std;
 class IMediciones {
     public:
         virtual void serializar(ofstream&) = 0;
-        virtual void deserializar(ifstream&) = 0; //deberia estar con ifstream y no con ofstream como esta en el enunciado
+        virtual void deserializar(ifstream&) = 0;
 };
-
+//HACE FALTA CONSTRUCTORES Y DESTRUCTORES VIRTUALES?
 class MedicionBase : public IMediciones {
     protected:
         unique_ptr<float> tiempoMedicion; //t
     public:
-        MedicionBase(float t_medicion);// : tiempoMedicion(make_unique<float>(t_medicion)) {};
+        MedicionBase(float t_medicion);
         float getTiempo();
         virtual void imprimir() = 0;
         //prototype interface metodo virtual de copiar
@@ -23,7 +23,7 @@ class Presion : public MedicionBase {
     public:
         float presionEstatica; //p
         float presionDinamica; //q
-        Presion(float p, float q, float t);// : presionEstatica(p), presionDinamica(q), MedicionBase(&t) {};
+        Presion(float p, float q, float t);
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;
@@ -35,7 +35,7 @@ class Posicion : public MedicionBase{
         float latitud;
         float longitud;
         float altitud;
-        Posicion(float lat, float lon, float alt, float t);// : latitud(lat), longitud(lon), altitud(alt), MedicionBase(&t) {};   
+        Posicion(float lat, float lon, float alt, float t);
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;     
@@ -44,9 +44,9 @@ class Posicion : public MedicionBase{
 };
 class SaveFlightData : public IMediciones{
     public:
-        Posicion posicion; //puntero a objeto?
-        Presion presion; //puntero a objeto?
-        SaveFlightData(const Posicion& p, const Presion& q);//: posicion(p), presion(q) {};
+        unique_ptr<Posicion> posicion;
+        unique_ptr<Presion> presion;
+        SaveFlightData(const Posicion& p, const Presion& q);
         void imprimir();
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;
