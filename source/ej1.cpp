@@ -13,7 +13,7 @@ Presion::Presion(float p, float q, float t) : MedicionBase(t) ,presionEstatica(p
 Presion::Presion(const Presion& other) : MedicionBase(other), presionEstatica(other.presionEstatica), presionDinamica(other.presionDinamica) {};
 
 void Presion::imprimir(){
-    cout<<"Datos de la presion en tiempo "<<getTiempo()<<"segundos: \n";
+    cout<<"Datos de la presion en tiempo "<<getTiempo()<<" segundos: \n";
     cout<<"Presion estatica: "<<presionEstatica<<"\nPresion dinamica: "<<presionDinamica<<"\n";
 }
 void Presion::serializar(ofstream& out){
@@ -36,8 +36,8 @@ Posicion::Posicion(float lat, float lon, float alt, float t) : MedicionBase(t), 
 Posicion::Posicion(const Posicion& other) : MedicionBase(other), latitud(other.latitud), longitud(other.longitud), altitud(other.altitud) {};
 
 void Posicion::imprimir(){
-    cout<<"Datos de la poscion en tiempo "<<getTiempo()<<"segundos: \n";
-    cout<<"Latitud: "<<latitud<<"\nLongitud: "<<longitud<<"\n Altitud: "<<altitud<<"\n";
+    cout<<"Datos de la poscion en tiempo "<<getTiempo()<<" segundos: \n";
+    cout<<"Latitud: "<<latitud<<"\nLongitud: "<<longitud<<"\nAltitud: "<<altitud<<"\n";
 }
 void Posicion::serializar(ofstream& out){
     out.write(reinterpret_cast<char*>(&latitud), sizeof(float));

@@ -1,6 +1,6 @@
 using namespace std;
 #include <iostream>
-#include <fstream> //chequar si es necesario
+#include <fstream> 
 #include <memory>
 
 class IMediciones {
