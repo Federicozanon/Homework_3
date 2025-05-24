@@ -8,8 +8,6 @@ using vec_doubles = vector<double>;
 using vec_string = vector<string>;
 using matrix_int = vector<vector<int>>;
 
-//hace falta los constructores?
-
 template <typename T>
 class variables_generator {
     private:

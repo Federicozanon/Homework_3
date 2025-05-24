@@ -2,15 +2,19 @@
 
 MedicionBase::MedicionBase(float t_medicion) : tiempoMedicion(make_unique<float>(t_medicion)) {};
 
+MedicionBase::MedicionBase(const MedicionBase& other) : tiempoMedicion(make_unique<float>(*other.tiempoMedicion)) {};
+
 float MedicionBase::getTiempo(){
     return *tiempoMedicion;
 }
 
-Presion::Presion(float p, float q, float t) : presionEstatica(p), presionDinamica(q), MedicionBase(t) {};
+Presion::Presion(float p, float q, float t) : MedicionBase(t) ,presionEstatica(p), presionDinamica(q) {};
+
+Presion::Presion(const Presion& other) : MedicionBase(other), presionEstatica(other.presionEstatica), presionDinamica(other.presionDinamica) {};
 
 void Presion::imprimir(){
     cout<<"Datos de la presion en tiempo "<<getTiempo()<<"segundos: \n";
-    cout<<"Presion dinamica: "<<presionDinamica<<"\nPresion estatica: "<<presionEstatica<<"\n";
+    cout<<"Presion estatica: "<<presionEstatica<<"\nPresion dinamica: "<<presionDinamica<<"\n";
 }
 void Presion::serializar(ofstream& out){
     out.write(reinterpret_cast<char*>(&presionEstatica), sizeof(float));
@@ -20,17 +24,16 @@ void Presion::serializar(ofstream& out){
 }
 void Presion::deserializar(ifstream& in){
     float t;
-    in.read(reinterpret_cast<char*>(&presionDinamica), sizeof(float));
     in.read(reinterpret_cast<char*>(&presionEstatica), sizeof(float));
+    in.read(reinterpret_cast<char*>(&presionDinamica), sizeof(float));
     in.read(reinterpret_cast<char*>(&t), sizeof(float));
     tiempoMedicion = make_unique<float>(t);
 
 }
-unique_ptr<MedicionBase> Presion::copiar() const{
-    return make_unique<Presion>(*this);
-}
 
-Posicion::Posicion(float lat, float lon, float alt, float t) : latitud(lat), longitud(lon), altitud(alt), MedicionBase(t) {}; 
+Posicion::Posicion(float lat, float lon, float alt, float t) : MedicionBase(t), latitud(lat), longitud(lon), altitud(alt) {}; 
+
+Posicion::Posicion(const Posicion& other) : MedicionBase(other), latitud(other.latitud), longitud(other.longitud), altitud(other.altitud) {};
 
 void Posicion::imprimir(){
 
@@ -51,11 +54,7 @@ void Posicion::deserializar(ifstream& in){
     tiempoMedicion = make_unique<float>(t);
 
 }
-unique_ptr<MedicionBase> Posicion::copiar() const{
-    return make_unique<Posicion>(*this);
-}
-
-SaveFlightData::SaveFlightData(const Posicion& p, const Presion& q) : posicion(dynamic_cast<Posicion*>(p.copiar().release())), presion(dynamic_cast<Presion*>(q.copiar().release())) {}
+SaveFlightData::SaveFlightData(const Posicion& p, const Presion& q) : posicion(make_unique<Posicion>(p)), presion(make_unique<Presion>(q)) {}
 
 void SaveFlightData::imprimir(){
 
@@ -67,5 +66,4 @@ void SaveFlightData::serializar(ofstream& out){
 void SaveFlightData::deserializar(ifstream& in){
     presion->deserializar(in);
     posicion->deserializar(in);
-
 }

@@ -23,7 +23,7 @@ string variables_generator<T>::data_process() const {
     else if constexpr(is_same_v<T, matrix_int>){
         string_vec<<"[\n";
         int n=values[0].size();
-        for(int i=0; i<n; i+=2){ // como puedo hacer para sacar el size de la matriz de forma mas segura?
+        for(int i=0; i<n; i+=2){ 
             string_vec<<"["<<values[i/n][(i+1)%n]<<", "<<values[(i+1)/n][(i+1)%n]<<"],\n";
         }
         string_vec<<"]\n";
