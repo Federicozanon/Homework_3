@@ -7,6 +7,7 @@ class IMediciones {
     public:
         virtual void serializar(ofstream&) = 0;
         virtual void deserializar(ifstream&) = 0;
+        virtual ~IMediciones() = default;
 };
 //HACE FALTA CONSTRUCTORES Y DESTRUCTORES VIRTUALES?
 class MedicionBase : public IMediciones {
@@ -17,9 +18,6 @@ class MedicionBase : public IMediciones {
         MedicionBase(const MedicionBase& other);
         float getTiempo();
         virtual void imprimir() = 0;
-        //prototype interface metodo virtual de copiar
-        //virtual unique_ptr<MedicionBase> copiar() const = 0;
-        ~MedicionBase() = default;
 };
 class Presion : public MedicionBase {
     public:
@@ -30,9 +28,6 @@ class Presion : public MedicionBase {
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;
-        //concrete prototype. son los objetos a los que se les provee un metodo para copiar
-        //unique_ptr<MedicionBase> copiar() const override;
-        ~Presion() = default;
 };
 class Posicion : public MedicionBase{
     public:
@@ -44,17 +39,14 @@ class Posicion : public MedicionBase{
         void imprimir() override;
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;     
-        //concrete prototype
-        //unique_ptr<MedicionBase> copiar() const override;
-        ~Posicion() = default;
 };
 class SaveFlightData : public IMediciones{
     public:
         unique_ptr<Posicion> posicion;
         unique_ptr<Presion> presion;
+        SaveFlightData();
         SaveFlightData(const Posicion& p, const Presion& q);
         void imprimir();
         void serializar(ofstream&) override;
         void deserializar(ifstream&) override;
-        ~SaveFlightData() = default;
 };
