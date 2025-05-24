@@ -1,4 +1,6 @@
-static constexpr double pi = 3.14159265358979323846;
+using namespace std;
+#include <iostream>
+constexpr double pi = 3.14159265358979323846;
 class point {
     private:
         double x_cord, y_cord;
@@ -37,6 +39,5 @@ class rectangle : public point{
 template<typename T>
 class ProcesadorFigura {
     public:
-        virtual double funcion_area(const T& figure);
-        
+        static double funcion_area(const T& figure);
 };

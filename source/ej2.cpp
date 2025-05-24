@@ -1,4 +1,4 @@
-#include "ej2.hpp"
+#include "../include/ej2.hpp"
 
 point::point(double x, double y) : x_cord(x), y_cord(y) {}
 double point::get_x() const{ 
