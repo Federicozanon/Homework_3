@@ -33,7 +33,6 @@ string variables_generator<T>::data_process() const {
     }
     return string_vec.str();
 }
-
 void variables_conversion_Json::tag_association(string valores, string nombre){
     vec_name_and_values.push_back({nombre, valores});
     }

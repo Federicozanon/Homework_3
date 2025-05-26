@@ -9,7 +9,6 @@ class IMediciones {
         virtual void deserializar(ifstream&) = 0;
         virtual ~IMediciones() = default;
 };
-//HACE FALTA CONSTRUCTORES Y DESTRUCTORES VIRTUALES?
 class MedicionBase : public IMediciones {
     protected:
         unique_ptr<float> tiempoMedicion; //t
