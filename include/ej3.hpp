@@ -1,6 +1,6 @@
 #include <vector>
 #include <iostream>
-#include <type_traits>//puede ser descartado?
+#include <type_traits>
 #include <sstream>
 using namespace std;
 using vec_doubles = vector<double>;
