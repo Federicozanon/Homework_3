@@ -1,8 +1,7 @@
 #include <vector>
-#include <string>//puede ser descartado?
 #include <iostream>
 #include <type_traits>//puede ser descartado?
-#include <sstream> //puede ser descartado?
+#include <sstream>
 using namespace std;
 using vec_doubles = vector<double>;
 using vec_string = vector<string>;
@@ -18,27 +17,32 @@ class variables_generator {
             values.push_back(value);
         }
         string data_process() const{
+            unsigned int tam = values.size();
+            if(tam==0){
+                throw std::invalid_argument("La variable es vacia");
+            }
             ostringstream string_vec;
             if constexpr(is_same_v<T, vec_doubles>){
                 string_vec<<"[";
-                for(size_t i=0; i<values.size(); i++){
-                    string_vec<<values[i]<<",";
+                for(unsigned int i=0; i<tam-1; i++){
+                    string_vec<<values[i]<<", ";
                 }
-                string_vec<<"]\n";
+                string_vec<<values[tam-1]<<"],\n";
             }
             else if constexpr(is_same_v<T, vec_string>){
                 string_vec<<"[";
-               for(size_t i=0; i<values.size();i++){
-                    string_vec<<"\""<<values[i]<<"\",";
+               for(unsigned int i=0; i<tam-1;i++){
+                    string_vec<<"\""<<values[i]<<"\", ";
                 }
-                string_vec<<"]\n";
+                string_vec<<"\""<<values[tam-1]<<"\"],\n";
             }
             else if constexpr(is_same_v<T, matrix_int>){
                 string_vec<<"[\n";
-                int n=values[0].size();
-                for(int i=0; i<n; i+=2){ 
-                    string_vec<<"["<<values[i/n][(i+1)%n]<<", "<<values[(i+1)/n][(i+1)%n]<<"],\n";
+                unsigned int n=values[0].size();
+                for(unsigned int i=0; i<n-1; i+=2){ 
+                    string_vec<<"["<<values[i/n][i%n]<<", "<<values[(i+1)/n][(i+1)%n]<<"],\n";
                 }
+                string_vec<<"["<<values[n/n][n%n]<<", "<<values[(n+1)/n][(n+1)%n]<<"]\n";
                 string_vec<<"]\n";
             }
             else{
@@ -59,6 +63,6 @@ class variables_conversion_Json{
             for(size_t i=0; i<vec_name_and_values.size(); i++){
                 cout<<"\""<<vec_name_and_values[i].first<<"\" : "<<vec_name_and_values[i].second;
             }
-            cout<<"}";
+            cout<<"}\n";
         }
 };
