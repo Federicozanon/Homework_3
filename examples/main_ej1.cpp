@@ -22,5 +22,5 @@ int main(){
     cerr << "Error al abrir archivo para lectura.\n";
     }
     datos_vuelo2.imprimir();
-    return 1;
+    return 0;
 }

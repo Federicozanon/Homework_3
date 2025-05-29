@@ -9,5 +9,5 @@ int main(){
     cout<<"Area circulo: "<<ProcesadorFigura<circle>::funcion_area(circulo)<<"\n";
     cout<<"Area elipse: "<<ProcesadorFigura<ellipse>::funcion_area(elipse)<<"\n";
     cout<<"Area rectangulo: "<<ProcesadorFigura<rectangle>::funcion_area(rectangulo)<<"\n";
-    return 1;
+    return 0;
 }
